@@ -1,0 +1,3 @@
+force: true  : response, requetst 할 때 인코딩을 강제한다
+
+ddl-auto: create : 기존에 테이블이 있으면 자동으로 drop을 하고 create를 함
