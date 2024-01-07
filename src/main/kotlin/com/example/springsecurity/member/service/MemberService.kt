@@ -29,7 +29,7 @@ class MemberService(
     /*
     * 회원가입
     * */
-    fun signUp(memberDtoRequest: MemberDtoRequest): String{
+    fun signUp(memberDtoRequest: MemberDtoRequest): Member{
 
         // Id 중복검사
         var member: Member? = memberRepository.findByLoginId(memberDtoRequest.loginId)
@@ -38,12 +38,13 @@ class MemberService(
         }
 
         member = memberDtoRequest.toEntity()
-        memberRepository.save(member)
+        val savedMember = memberRepository.save(member)
 
         val memberRole: MemberRole = MemberRole(null, ROLE.MEMBER, member)
         memberRoleRepository.save(memberRole)
 
-        return "회원가입이 완료되었습니다."
+        //return "회원가입이 완료되었습니다."
+        return savedMember
     }
 
 

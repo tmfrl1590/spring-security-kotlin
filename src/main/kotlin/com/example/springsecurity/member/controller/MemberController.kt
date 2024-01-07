@@ -6,6 +6,7 @@ import com.example.springsecurity.common.dto.CustomUser
 import com.example.springsecurity.member.dto.LoginDto
 import com.example.springsecurity.member.dto.MemberDtoRequest
 import com.example.springsecurity.member.dto.MemberDtoResponse
+import com.example.springsecurity.member.entity.Member
 import com.example.springsecurity.member.service.MemberService
 import jakarta.validation.Valid
 import org.springframework.security.core.context.SecurityContextHolder
@@ -26,9 +27,13 @@ class MemberController(
 
     // 회원가입
     @PostMapping("/signup")
-    fun signUp(@RequestBody @Valid memberDtoRequest: MemberDtoRequest): BaseResponse<Unit> {
-        val resultMsg: String = memberService.signUp(memberDtoRequest)
-        return BaseResponse(message = resultMsg)
+    fun signUp(@RequestBody @Valid memberDtoRequest: MemberDtoRequest): BaseResponse<Member> {
+        //val resultMsg: String = memberService.signUp(memberDtoRequest)
+        val resultMsg: Member = memberService.signUp(memberDtoRequest)
+        return BaseResponse(
+            message = "회원가입이 완료되었습니다.",
+            data = resultMsg
+        )
     }
 
     // 로그인
@@ -40,8 +45,8 @@ class MemberController(
 
     // 내정보 조회
     @GetMapping("/info")
-    fun searchMyInfo(): BaseResponse<MemberDtoResponse>{
-        val userId = (SecurityContextHolder.getContext().authentication.principal as CustomUser).userId
+    fun searchMyInfo(userId: Long): BaseResponse<MemberDtoResponse>{
+        //val userId = (SecurityContextHolder.getContext().authentication.principal as CustomUser).userId
         val response = memberService.searchMyInfo(userId)
         return BaseResponse(data = response)
     }
@@ -49,7 +54,8 @@ class MemberController(
     // 내정보 수정
     @PutMapping("/info")
     fun saveMyInfo(@RequestBody @Valid memberDtoRequest: MemberDtoRequest): BaseResponse<Unit> {
-        val userId = (SecurityContextHolder.getContext().authentication.principal as CustomUser).userId
+        //val userId = (SecurityContextHolder.getContext().authentication.principal as CustomUser).userId
+        val userId = 1L
         memberDtoRequest.id = userId
         val resultMsg: String = memberService.saveMyInfo(memberDtoRequest)
         return BaseResponse(message = resultMsg)
